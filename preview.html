@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌻 A Birthday Surprise for Mom 🌻</title>
+<style>
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:Georgia, "Trebuchet MS", sans-serif;
+    color:#5b3b08;
+    background:
+      radial-gradient(circle at 15% 10%, #fff8b8 0 5%, transparent 6%),
+      radial-gradient(circle at 85% 20%, #ffe6a3 0 5%, transparent 6%),
+      linear-gradient(135deg,#fff9cf,#fff1a8 45%,#ffe6a3);
+    overflow-x:hidden;
+  }
+  button{font:inherit}
+  .hidden{display:none!important}
+
+  /* Password screen */
+  #lock{
+    min-height:100vh; display:flex; align-items:center; justify-content:center;
+    padding:24px; position:relative; overflow:hidden;
+    background:linear-gradient(135deg,#fff9c7,#ffd86b,#fff3a6);
+  }
+  .lock-card{
+    width:min(460px,100%); text-align:center; padding:38px 28px;
+    background:rgba(255,255,255,.88); border:3px solid #f5c842;
+    border-radius:32px; box-shadow:0 18px 50px rgba(130,87,0,.18);
+    position:relative; z-index:2;
+  }
+  .sunflower{font-size:72px; animation:float 3s ease-in-out infinite}
+  h1{font-size:clamp(30px,7vw,54px); margin:8px 0;color:#7a4b00}
+  .subtitle{font-size:18px;line-height:1.6}
+  .question{font-weight:bold;margin:22px 0 10px}
+  input{
+    width:100%; padding:15px 18px; border-radius:16px; border:2px solid #edc447;
+    outline:none; font-size:17px; text-align:center; background:#fffdf0;
+  }
+  input:focus{border-color:#c78c00}
+  .btn{
+    margin-top:14px; padding:14px 25px; border:0; border-radius:999px;
+    background:#f5c842;color:#5b3b08;font-weight:bold;cursor:pointer;
+    box-shadow:0 7px 0 #d49d1c; transition:.15s;
+  }
+  .btn:active{transform:translateY(5px);box-shadow:0 2px 0 #d49d1c}
+  #error{height:24px;color:#b42318;font-weight:bold;margin-top:10px}
+
+  /* Main */
+  #site{min-height:100vh}
+  header{
+    min-height:90vh;display:flex;align-items:center;justify-content:center;
+    text-align:center;padding:70px 20px;position:relative;overflow:hidden;
+  }
+  .hero{
+    max-width:900px;position:relative;z-index:2;
+    background:rgba(255,255,255,.68);border:2px solid rgba(255,196,49,.65);
+    padding:45px 25px;border-radius:38px;backdrop-filter:blur(4px);
+    box-shadow:0 20px 60px rgba(128,82,0,.12)
+  }
+  .hero h2{font-size:clamp(38px,9vw,78px);margin:0;color:#d18a00}
+  .hero p{font-size:clamp(18px,3vw,25px);line-height:1.7;margin:18px auto;max-width:720px}
+  .scroll{display:inline-block;margin-top:12px;color:#8a5a00;font-weight:bold}
+
+  section{padding:70px 20px;max-width:1100px;margin:auto}
+  .section-title{text-align:center;font-size:clamp(30px,6vw,48px);color:#a96c00;margin:0 0 35px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px}
+  .card{
+    background:rgba(255,255,255,.82);border:2px solid #f3cf5a;border-radius:28px;
+    padding:26px;text-align:center;box-shadow:0 14px 35px rgba(120,75,0,.10)
+  }
+
+  /* Gift boxes */
+  .gift{
+    min-height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    cursor:pointer;user-select:none;transition:.2s
+  }
+  .gift:hover{transform:translateY(-5px) rotate(-1deg)}
+  .box{position:relative;width:105px;height:82px;margin:8px auto 18px}
+  .box-body{
+    position:absolute;left:5px;bottom:0;width:95px;height:62px;
+    background:#ffd95e;border:3px solid #d49d1c;border-radius:7px
+  }
+  .box-lid{
+    position:absolute;left:0;top:8px;width:105px;height:25px;
+    background:#f6c542;border:3px solid #d49d1c;border-radius:7px;z-index:2;
+    transition:.35s
+  }
+  .ribbon-v{position:absolute;left:42px;top:8px;width:20px;height:76px;background:#fff0a1;z-index:3}
+  .ribbon-h{position:absolute;left:5px;top:39px;width:95px;height:15px;background:#fff0a1;z-index:3}
+  .gift.opened .box-lid{transform:translateY(-48px) rotate(-7deg)}
+  .gift small{font-size:15px}
+
+  /* Hamper */
+  .hamper{
+    background:linear-gradient(145deg,#fffdf0,#ffeaa4);
+    border:3px dashed #dda91e;border-radius:35px;padding:30px;text-align:center;
+    box-shadow:0 15px 40px rgba(130,80,0,.12)
+  }
+  .hamper-btn{font-size:50px;border:0;background:none;cursor:pointer;transition:.2s}
+  .hamper-btn:hover{transform:scale(1.08)}
+  .hamper-content{
+    max-height:0;overflow:hidden;opacity:0;transition:max-height .8s ease,opacity .5s ease;
+  }
+  .hamper.open .hamper-content{max-height:1000px;opacity:1}
+  .note{
+    margin:18px auto;padding:22px;max-width:850px;background:#fff;
+    border-radius:24px;box-shadow:0 10px 25px rgba(100,65,0,.09);
+    line-height:1.8;font-size:17px
+  }
+
+  .message{
+    margin-top:14px;padding:16px;border-radius:18px;background:#fff9d7;
+    border:1px solid #f1d26a;font-weight:bold;display:none;animation:pop .35s ease
+  }
+  .gift.opened .message{display:block}
+
+  footer{text-align:center;padding:55px 20px;background:rgba(255,220,105,.35);line-height:1.7}
+  .heart,.petal{
+    position:fixed;pointer-events:none;z-index:10;animation:fall linear forwards
+  }
+  .heart{font-size:24px}
+  .petal{font-size:28px}
+  @keyframes fall{from{transform:translateY(-10vh) rotate(0deg);opacity:1}to{transform:translateY(110vh) rotate(360deg);opacity:0}}
+  @keyframes float{50%{transform:translateY(-10px) rotate(3deg)}}
+  @keyframes pop{0%{transform:scale(.8);opacity:0}100%{transform:scale(1);opacity:1}}
+  @media(max-width:600px){
+    .lock-card{padding:30px 20px}
+    header{min-height:85vh}
+    .hero{padding:35px 18px}
+    section{padding:55px 14px}
+  }
+</style>
+</head>
+<body>
+
+<div id="lock">
+  <div class="lock-card">
+    <div class="sunflower">🌻</div>
+    <h1>A Little Surprise</h1>
+    <p class="subtitle">Your family made a little birthday surprise for you. 💛<br>But first, answer the secret question...</p>
+    <div class="question">Who is your fav child? 👀</div>
+    <input id="password" type="password" placeholder="Type the answer..." autocomplete="off">
+    <button class="btn" onclick="unlock()">Open My Surprise 💝</button>
+    <div id="error"></div>
+  </div>
+</div>
+
+<div id="site" class="hidden">
+  <header>
+    <div class="hero">
+      <div style="font-size:52px">🌻 💛 🌻 💛 🌻</div>
+      <h2>Happy Birthday, Mom! 🎂</h2>
+      <p>
+        Today is all about you — your smile, your happiness, your beautiful heart,
+        and all the little things that make you wonderfully you. 💛
+      </p>
+      <div style="font-size:42px">🎁 💝 🎁</div>
+      <span class="scroll">Scroll down and open your surprises ↓</span>
+    </div>
+  </header>
+
+  <section>
+    <h2 class="section-title">🎁 Little Birthday Gifts 🎁</h2>
+    <div class="cards">
+
+      <div class="card gift" onclick="openGift(this,'💛 Happy Birthday! 💛')">
+        <div class="box">
+          <div class="box-body"></div><div class="ribbon-v"></div><div class="ribbon-h"></div><div class="box-lid"></div>
+        </div>
+        <h3>Gift One 🌻</h3>
+        <small>Tap me!</small>
+        <div class="message"></div>
+      </div>
+
+      <div class="card gift" onclick="openGift(this,'✨ Wishing you all the best, today and always! ✨')">
+        <div class="box">
+          <div class="box-body"></div><div class="ribbon-v"></div><div class="ribbon-h"></div><div class="box-lid"></div>
+        </div>
+        <h3>Gift Two 💝</h3>
+        <small>There is something inside...</small>
+        <div class="message"></div>
+      </div>
+
+      <div class="card gift" onclick="openGift(this,'🌸 Have the happiest, brightest, most beautiful day! 🌸')">
+        <div class="box">
+          <div class="box-body"></div><div class="ribbon-v"></div><div class="ribbon-h"></div><div class="box-lid"></div>
+        </div>
+        <h3>Gift Three 🎀</h3>
+        <small>Open your surprise!</small>
+        <div class="message"></div>
+      </div>
+
+      <div class="card gift" onclick="openGift(this,'🥰 Keep smiling — you deserve so many beautiful moments! 🥰')">
+        <div class="box">
+          <div class="box-body"></div><div class="ribbon-v"></div><div class="ribbon-h"></div><div class="box-lid"></div>
+        </div>
+        <h3>Gift Four 💛</h3>
+        <small>One more surprise!</small>
+        <div class="message"></div>
+      </div>
+
+      <div class="card gift" onclick="openGift(this,'🎉 May this new year of your life bring you laughter, peace, dreams, and countless reasons to smile! 🎉')">
+        <div class="box">
+          <div class="box-body"></div><div class="ribbon-v"></div><div class="ribbon-h"></div><div class="box-lid"></div>
+        </div>
+        <h3>Gift Five 🎂</h3>
+        <small>Tap to open</small>
+        <div class="message"></div>
+      </div>
+
+      <div class="card gift" onclick="openGift(this,'❤️ You are a very special person, and today is a perfect excuse to remind you of that. ❤️')">
+        <div class="box">
+          <div class="box-body"></div><div class="ribbon-v"></div><div class="ribbon-h"></div><div class="box-lid"></div>
+        </div>
+        <h3>Gift Six 🌻</h3>
+        <small>Last little gift</small>
+        <div class="message"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">🌻 Your Birthday Hamper 🌻</h2>
+    <div class="hamper" id="hamper">
+      <button class="hamper-btn" onclick="openHamper()" aria-label="Open birthday hamper">🧺🎁</button>
+      <h3>Tap the hamper to open it 💛</h3>
+      <div class="hamper-content">
+        <div class="note">
+          <div style="font-size:45px">🌻💛🎂💝🌻</div>
+          <h2>For You, Mom</h2>
+          <p>
+            Happy Birthday to someone who deserves a day filled with sunshine, laughter,
+            warmth, and all the little things that make a heart happy. I hope today reminds
+            you just how special you are and how much happiness you bring into the lives of
+            the people around you. Birthdays are more than just another year passing by;
+            they are a beautiful reminder of all the memories you have made, all the things
+            you have learned, all the people who care about you, and all the wonderful moments
+            that are still waiting for you.
+          </p>
+          <p>
+            I hope this new chapter of your life brings you closer to your dreams and gives
+            you countless reasons to smile. May you have the courage to chase what makes you
+            happy, the strength to get through the difficult days, and the people around you
+            who make the good days even better. Whenever life feels a little heavy, I hope
+            you remember that brighter days are always possible. Keep being yourself, keep
+            laughing, keep dreaming, and never forget how much your presence can mean to
+            someone.
+          </p>
+          <p>
+            So today, forget the worries for a while, enjoy your cake, enjoy every message,
+            take lots of pictures, laugh until your cheeks hurt, and make a memory that you
+            will look back on with a smile. 🌻 You deserve happiness, peace, success, love,
+            and a year full of beautiful surprises. May this birthday be the beginning of
+            one of your happiest chapters yet. Happy Birthday once again, Riya! 🎂💛
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">💌 Birthday Wishes for Mom</h2>
+    <div class="cards">
+      <div class="card"><div style="font-size:42px">🌻</div><h3>Stay Happy</h3><p>May your smile stay bright and your days be filled with little reasons to be happy.</p></div>
+      <div class="card"><div style="font-size:42px">✨</div><h3>Dream Big</h3><p>May you get every opportunity to turn your dreams into beautiful memories.</p></div>
+      <div class="card"><div style="font-size:42px">💛</div><h3>All The Best</h3><p>For everything coming your way — may good luck and good people always find you.</p></div>
+      <div class="card"><div style="font-size:42px">🎉</div><h3>Have A Great Day</h3><p>Enjoy every second of your birthday and make today one to remember.</p></div>
+    </div>
+  </section>
+
+  <footer>
+    <div style="font-size:40px">🌻 💛 🌻 💛 🌻</div>
+    <h2>Happy Birthday, Mom! 🎂</h2>
+    <p>May your whole year be as bright and beautiful as a field of sunflowers. ✨</p>
+    <p>Made with lots of 💛</p>
+  </footer>
+</div>
+
+<script>
+  const correctPassword = "riya";
+
+  function unlock(){
+    const value=document.getElementById("password").value.trim().toLowerCase();
+    const error=document.getElementById("error");
+    if(value===correctPassword){
+      document.getElementById("lock").classList.add("hidden");
+      document.getElementById("site").classList.remove("hidden");
+      burst();
+      setTimeout(burst,700);
+    }else{
+      error.textContent="Not quite! Try again 💛";
+      document.getElementById("password").value="";
+    }
+  }
+
+  document.getElementById("password").addEventListener("keydown",e=>{
+    if(e.key==="Enter") unlock();
+  });
+
+  function openGift(card,message){
+    card.classList.toggle("opened");
+    if(card.classList.contains("opened")){
+      card.querySelector(".message").textContent=message;
+      burst();
+    }
+  }
+
+  function openHamper(){
+    document.getElementById("hamper").classList.toggle("open");
+    burst();
+  }
+
+  function burst(){
+    const symbols=["❤️","💛","💖","💕","🌻","✨","💝"];
+    for(let i=0;i<28;i++){
+      const el=document.createElement("div");
+      el.className=Math.random()>.25?"heart":"petal";
+      el.textContent=symbols[Math.floor(Math.random()*symbols.length)];
+      el.style.left=(5+Math.random()*90)+"vw";
+      el.style.top=(10+Math.random()*35)+"vh";
+      el.style.animationDuration=(2.5+Math.random()*3)+"s";
+      document.body.appendChild(el);
+      setTimeout(()=>el.remove(),6000);
+    }
+  }
+</script>
+</body>
+</html>
